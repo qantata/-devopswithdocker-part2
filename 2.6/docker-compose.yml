@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+    db:
+      image: postgres
+      restart: unless-stopped
+      environment:
+        - POSTGRES_PASSWORD=secret
+    redis:
+      image: redis:6.2.6
+    backend:
+      build: ./example-backend
+      ports:
+        - 8080:8080
+      environment:
+        - REDIS_HOST=redis
+        - POSTGRES_HOST=db
+        - POSTGRES_PASSWORD=secret
+    frontend:
+      build: ./example-frontend
+      ports:
+        - 5000:5000
